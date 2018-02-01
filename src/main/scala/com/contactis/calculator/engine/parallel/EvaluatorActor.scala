@@ -1,7 +1,7 @@
 package com.contactis.calculator.engine.parallel
 
-import akka.pattern.{ask, pipe}
-import akka.actor.{Actor, ActorContext, PoisonPill, Props}
+import akka.pattern.{ ask, pipe }
+import akka.actor.{ Actor, ActorContext, PoisonPill, Props }
 import akka.util.Timeout
 import cats.data.Validated.Valid
 
@@ -21,7 +21,9 @@ class EvaluatorActor extends Actor {
 
   override def receive: Receive = {
     case Eval(ast) => ast match {
-      case Const(x) => sender() ! Valid(x)
+      case Const(x) =>
+        sender() ! Valid(x)
+        self ! PoisonPill
       case Add(x, y) => eval(x, y, _ + _)(context)
       case Sub(x, y) => eval(x, y, _ - _)(context)
       case Mult(x, y) => eval(x, y, _ * _)(context)
@@ -36,13 +38,8 @@ class EvaluatorActor extends Actor {
     val resp1 = (worker1 ? Eval(x)).mapTo[EvaluatorActorResponse[Double]]
     val resp2 = (worker2 ? Eval(y)).mapTo[EvaluatorActorResponse[Double]]
 
-    resp1.onComplete(_  => worker1 ! PoisonPill)
-    resp2.onComplete(_  => worker2 ! PoisonPill)
-
-    pipe(
-      (resp1, resp2).mapN((a,b) => (a,b).mapN(f))
-    ) to sender()
-
+    pipe((resp1, resp2).mapN((a, b) => (a, b).mapN(f))) to sender()
+    self ! PoisonPill
   }
 }
 

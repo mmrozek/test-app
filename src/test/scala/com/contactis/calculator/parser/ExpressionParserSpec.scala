@@ -1,6 +1,6 @@
 package com.contactis.calculator.parser
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.{ Matchers, WordSpec }
 import com.contactis.calculator._
 
 class ExpressionParserSpec extends WordSpec with Matchers {
@@ -16,12 +16,12 @@ class ExpressionParserSpec extends WordSpec with Matchers {
 
     "return correct AST for simple expression" in {
       val input = "2+2"
-      parse(input) should ===(Right(Add(Const(2),Const(2))))
+      parse(input) should ===(Right(Add(Const(2), Const(2))))
     }
 
     "return correct AST for complex expression" in {
       val input = "3-(2+2)*6"
-      parse(input) should ===(Right(Sub(Const(3),Mult(Add(Const(2),Const(2)),Const(6)))))
+      parse(input) should ===(Right(Sub(Const(3), Mult(Add(Const(2), Const(2)), Const(6)))))
     }
 
     "return a parsing error for broken expression" in {

@@ -5,7 +5,6 @@ import cats.data.ValidatedNel
 import com.contactis.calculator
 import com.contactis.calculator._
 import cats.implicits._
-import cats.instances._
 
 //For test
 object SimpleEvaluator extends Evaluator[Id] {

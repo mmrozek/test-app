@@ -2,7 +2,7 @@ package com.contactis.calculator.http
 
 import akka.actor.ActorSystem
 import akka.event.Logging
-import akka.http.scaladsl.server.Directives.{pathEnd, pathPrefix}
+import akka.http.scaladsl.server.Directives.{ pathEnd, pathPrefix }
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.directives.MethodDirectives.post
 
