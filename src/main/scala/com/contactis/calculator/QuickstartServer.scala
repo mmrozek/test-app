@@ -8,7 +8,7 @@ import com.contactis.calculator.evaluator.parallel.ActorBasedEvaluator
 import com.contactis.calculator.http.EvaluateRoutes
 import com.contactis.calculator.parser.ExpressionParser
 
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration.Duration
 
 import cats.implicits._

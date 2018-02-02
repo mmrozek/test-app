@@ -1,3 +1,7 @@
 package com.contactis.calculator.evaluator
 
-case class EvaluationError(details: String)
+trait EvaluationError {
+  def details: String
+}
+
+case class DividingByZeroError(details: String = "Dividing by 0") extends EvaluationError

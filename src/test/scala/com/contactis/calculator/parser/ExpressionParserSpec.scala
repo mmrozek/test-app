@@ -26,7 +26,7 @@ class ExpressionParserSpec extends WordSpec with Matchers {
 
     "return a parsing error for broken expression" in {
       val input = "3-"
-      parse(input) should ===(Left(ParsingServiceError("Expected a value")))
+      parse(input) should ===(Left(ParsingError("Expected a value")))
     }
   }
 
