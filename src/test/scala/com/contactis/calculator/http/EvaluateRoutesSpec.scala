@@ -1,8 +1,9 @@
 package com.contactis.calculator.http
 
+import akka.actor.ActorSystem
 import akka.http.scaladsl.marshalling.Marshal
 import akka.http.scaladsl.model._
-import akka.http.scaladsl.testkit.ScalatestRouteTest
+import akka.http.scaladsl.testkit.{ RouteTestTimeout, ScalatestRouteTest }
 import com.contactis.calculator.evaluator.parallel.ActorBasedEvaluator
 import com.contactis.calculator.parser.ExpressionParser
 import com.contactis.calculator.{ EvaluationService, ServiceError }
@@ -10,10 +11,12 @@ import org.scalatest.{ Matchers, WordSpec }
 import cats.implicits._
 import org.scalatest.concurrent.ScalaFutures
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.concurrent.duration._
 
 class EvaluateRoutesSpec extends WordSpec with Matchers with ScalatestRouteTest with EvaluateRoutes with JsonSupport with ScalaFutures {
+
+  implicit def default(implicit system: ActorSystem) = RouteTestTimeout(5 seconds)
 
   override val evaluationService: (String) => Future[Either[ServiceError, Double]] =
     new EvaluationService[Future](
