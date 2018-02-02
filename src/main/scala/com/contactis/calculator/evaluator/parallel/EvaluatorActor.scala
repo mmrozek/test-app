@@ -1,4 +1,4 @@
-package com.contactis.calculator.engine.parallel
+package com.contactis.calculator.evaluator.parallel
 
 import akka.pattern.{ ask, pipe }
 import akka.actor.{ Actor, ActorContext, PoisonPill, Props }
@@ -8,16 +8,16 @@ import cats.data.Validated.Valid
 import scala.concurrent.duration._
 import cats.data.ValidatedNel
 import com.contactis.calculator._
-import com.contactis.calculator.engine.EvaluationError
-import com.contactis.calculator.engine.parallel.EvaluatorActor.protocol.Eval
+import com.contactis.calculator.evaluator.EvaluationError
+import com.contactis.calculator.evaluator.parallel.EvaluatorActor.protocol.Eval
 import cats.implicits._
-import com.contactis.calculator.engine.parallel.EvaluatorActor.EvaluatorActorResponse
+import com.contactis.calculator.evaluator.parallel.EvaluatorActor.EvaluatorActorResponse
 
-import scala.concurrent.ExecutionContext.Implicits.global //todo
-
-class EvaluatorActor extends Actor {
+private[evaluator] class EvaluatorActor extends Actor {
 
   implicit val timeout = Timeout(5 seconds)
+
+  implicit def ec = context.dispatcher
 
   override def receive: Receive = {
     case Eval(ast) => ast match {
@@ -43,7 +43,7 @@ class EvaluatorActor extends Actor {
   }
 }
 
-object EvaluatorActor {
+private[evaluator] object EvaluatorActor {
   def props() = Props(new EvaluatorActor)
 
   type EvaluatorActorResponse[T] = ValidatedNel[EvaluationError, T]

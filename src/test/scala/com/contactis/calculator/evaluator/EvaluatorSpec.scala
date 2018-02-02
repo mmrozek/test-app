@@ -1,4 +1,4 @@
-package com.contactis.calculator.engine
+package com.contactis.calculator.evaluator
 
 import akka.actor.ActorSystem
 import akka.testkit.TestKit
@@ -6,7 +6,7 @@ import cats.Id
 import cats.data.Validated.Valid
 import cats.data.ValidatedNel
 import com.contactis.calculator._
-import com.contactis.calculator.engine.parallel.ActorBasedEvaluator
+import com.contactis.calculator.evaluator.parallel.ActorBasedEvaluator
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{ BeforeAndAfterAll, Matchers, WordSpecLike }
 

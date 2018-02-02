@@ -1,4 +1,4 @@
-package com.contactis.calculator.engine
+package com.contactis.calculator.evaluator
 
 import cats.Monad
 import cats.data.ValidatedNel

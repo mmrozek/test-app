@@ -1,4 +1,4 @@
-package com.contactis.calculator.engine
+package com.contactis.calculator.evaluator
 import cats.Id
 import cats.data.Validated.Valid
 import cats.data.ValidatedNel
@@ -7,7 +7,7 @@ import com.contactis.calculator._
 import cats.implicits._
 
 //For test
-object SimpleEvaluator extends Evaluator[Id] {
+private[evaluator] object SimpleEvaluator extends Evaluator[Id] {
   override def evaluate(ast: calculator.Expr): ValidatedNel[EvaluationError, Double] = ast match {
     case Const(x) => Valid(x)
     case Add(x, y) => (evaluate(x), evaluate(y)).mapN(_ + _)
