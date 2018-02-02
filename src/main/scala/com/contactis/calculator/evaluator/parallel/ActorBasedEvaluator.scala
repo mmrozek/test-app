@@ -14,7 +14,7 @@ import com.contactis.calculator.evaluator.parallel.EvaluatorActor.protocol.Eval
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-private[evaluator] class ActorBasedEvaluator(system: ActorSystem)(implicit ec: ExecutionContext) extends Evaluator[Future] {
+class ActorBasedEvaluator(system: ActorSystem)(implicit ec: ExecutionContext) extends Evaluator[Future] {
 
   implicit val timeout = Timeout(5 seconds)
 

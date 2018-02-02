@@ -23,7 +23,5 @@ class EvaluationServiceSpec extends WordSpec with Matchers {
       val service = new EvaluationService[Id](_ => Right(Const(1.0)), _ => Invalid(NonEmptyList(EvaluationError("error"), Nil)))
       service.evaluate("1.0") should ===(Left(EvaluationServiceError("error")))
     }
-
   }
-
 }
