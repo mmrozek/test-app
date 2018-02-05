@@ -13,11 +13,15 @@ object ExpressionParser extends scala.util.parsing.combinator.RegexParsers {
     }
   }
 
-  private def expr: Parser[Expr] =
-    (term <~ "+") ~ expr ^^ { case l ~ r => Add(l, r) } | (term <~ "-") ~ expr ^^ { case l ~ r => Sub(l, r) } | term
+  private def expr: Parser[Expr] = term ~ rep(plus | minus) ^^ { case a ~ b => b.foldLeft(a)((expr, op) => op(expr)) }
 
-  private def term: Parser[Expr] =
-    (factor <~ "*") ~ term ^^ { case l ~ r => Mult(l, r) } | (factor <~ "/") ~ term ^^ { case l ~ r => Div(l, r) } | factor
+  private def plus: Parser[Expr => Expr] = "+" ~> term ^^ (b => a => Add(a, b))
+  private def minus: Parser[Expr => Expr] = "-" ~> term ^^ (b => a => Sub(a, b))
+
+  private def term: Parser[Expr] = factor ~ rep(mult | div) ^^ { case a ~ b => b.foldLeft(a)((expr, op) => op(expr)) }
+
+  private def mult: Parser[Expr => Expr] = "*" ~> factor ^^ (b => a => Mult(a, b))
+  private def div: Parser[Expr => Expr] = "/" ~> factor ^^ (b => a => Div(a, b))
 
   private def factor: Parser[Expr] =
     "(" ~> expr <~ ")" | "\\d+".r ^^ { x => Const(x.toInt) } | err("Expected a value")

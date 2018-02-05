@@ -39,8 +39,11 @@ private[evaluator] class EvaluatorActor extends Actor {
     val resp1 = (worker1 ? Eval(x)).mapTo[EvaluatorActorResponse[Double]]
     val resp2 = (worker2 ? Eval(y)).mapTo[EvaluatorActorResponse[Double]]
 
-    pipe((resp1, resp2).mapN((a, b) => f(a, b))) to sender()
-    self ! PoisonPill
+    val result = (resp1, resp2).mapN((a, b) => f(a, b))
+
+    pipe(result) to sender()
+
+    result.onComplete(_ => self ! PoisonPill)
   }
 }
 
